@@ -294,11 +294,12 @@ def no_command():
 
 def parser(text: str) -> tuple[callable, tuple[str]|None]:
     args = text.strip().split()
+    text = text.strip().casefold()
     arg0 = args[0].casefold()
     if not args or (arg0 not in ("add", "change", "remove", "show") \
-    and text.strip().casefold() not in ("show all", "good bye", "bye", "close", "exit", "hello")):
+    and text not in ("show all", "good bye", "bye", "close", "exit", "hello")):
         return no_command, None
-    if text.strip().casefold() == "show all":
+    if text == "show all":
         return AddressBook.show, args
     name_key = None
     phone_key = None
@@ -373,9 +374,9 @@ def parser(text: str) -> tuple[callable, tuple[str]|None]:
         or (not phone_key and not birthday_key and len_args - name_key != 2):
             return error, "There is should be single name"
         return AddressBook.remove_record, args
-    elif text.strip().casefold() == "good bye" or text.strip().casefold() == "bye" or text.strip().casefold() == "close" or text.strip().casefold() == "exit":
+    elif text == "good bye" or text == "bye" or text == "close" or text == "exit":
         return exit, None
-    elif text.strip().casefold() == "hello":
+    elif text == "hello":
         return hello, None
     elif arg0 == "show":
         if not name_key and not phone_key:
