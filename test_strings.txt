@@ -1,0 +1,21 @@
+add -name Bill -phone 380991234567 380991234567 380991234577 -birthday 11.07.1999
+add -name Jill -phone 380993214567 380951234567n 380992128577
+add -name Kyle -birthday 24.05.2001
+add -name Mike
+add -name Mark -birthday 24.05.2001
+show all
+change -name Bill -phone 380991234567 380981234567n 380991234577 380952128577 -birthday 13.07.1999
+change -name Mike Richard -birthday 12.01.2000
+show all
+remove -name Richard
+remove -name Kyle -birthday
+add -name Jill -phone 380993214517 380990128577
+add -name Jill -phone 380993214517 380990128577
+remove -name Jill -birthday
+remove -name Jill -phone
+show all
+add -name Richard -phone 380979876543
+show -phone 9798
+show -name ill
+show -name ill -phone 9798
+show -phone 9798 -name ill
