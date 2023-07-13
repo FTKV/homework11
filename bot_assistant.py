@@ -294,7 +294,8 @@ def no_command():
 
 def parser(text: str) -> tuple[callable, tuple[str]|None]:
     args = text.strip().split()
-    if not args or (args[0].casefold() not in ("add", "change", "remove", "show") \
+    arg0 = args[0].casefold()
+    if not args or (arg0 not in ("add", "change", "remove", "show") \
     and text.strip().casefold() not in ("show all", "good bye", "bye", "close", "exit", "hello")):
         return no_command, None
     if text.strip().casefold() == "show all":
@@ -303,35 +304,35 @@ def parser(text: str) -> tuple[callable, tuple[str]|None]:
     phone_key = None
     birthday_key = None
     for i, arg in enumerate(args):
-        if arg.casefold() == "-name" or arg.casefold() == "-names":
+        arg = arg.casefold()
+        if arg == "-name" or arg == "-names":
             if name_key:
                 return error, "There are shouldn't be duplicate keys"
             else:
                 name_key = i
-        if arg.casefold() == "-phone" or arg.casefold() == "-phones":
+        if arg == "-phone" or arg == "-phones":
             if phone_key:
                 return error, "There are shouldn't be duplicate keys"
             else:
                 phone_key = i
-        if arg.casefold() == "-birthday":
+        if arg == "-birthday":
             if birthday_key:
                 return error, "There are shouldn't be duplicate keys"
             else:
                 birthday_key = i
 
-    if args[0].casefold() == "add" or args[0].casefold() == "change" or args[0].casefold() == "remove":
+    if arg0 == "add" or arg0 == "change" or arg0 == "remove":
         if not name_key:
             return error, "The -name(s) key is necessary for adding, changing or removing"
         if (birthday_key and phone_key and (birthday_key < name_key or birthday_key < phone_key)) or (phone_key and phone_key < name_key):
             return error, "The order of keys for adding, changing or removing should be: -name(s) -phone(s) -birthday"
-    elif args[0].casefold() == "show":
+    elif arg0 == "show":
         if name_key and phone_key and phone_key < name_key:
             return error, "The order of keys for showing should be: -name(s) -phone(s)"
         if birthday_key:
             return error, "Showing by birthday are not allowed"
         
-    if args[0].casefold() == "add" or args[0].casefold() == "change" or args[0].casefold() == "remove" \
-    or args[0].casefold() == "show":
+    if arg0 == "add" or arg0 == "change" or arg0 == "remove" or arg0 == "show":
         if name_key:
             name_key += 3
         if phone_key:
@@ -343,7 +344,7 @@ def parser(text: str) -> tuple[callable, tuple[str]|None]:
         args.insert(1, name_key)
         len_args = len(args)
         
-    if args[0].casefold() == "add":
+    if arg0 == "add":
         if birthday_key and len_args - birthday_key != 2:
             return error, "There is should be single birthday value"
         if phone_key:
@@ -354,7 +355,7 @@ def parser(text: str) -> tuple[callable, tuple[str]|None]:
         or (not phone_key and not birthday_key and len_args - name_key != 2):
             return error, "There is should be single name"
         return AddressBook.add_record, args
-    elif args[0].casefold() == "change":
+    elif arg0 == "change":
         if birthday_key and len_args - birthday_key != 2:
             return error, "There is should be single birthday value"
         if phone_key:
@@ -365,7 +366,7 @@ def parser(text: str) -> tuple[callable, tuple[str]|None]:
         or (not phone_key and not birthday_key and len_args - name_key not in (2, 3)):
             return error, "There are should be one or two names"
         return AddressBook.change_record, args
-    elif args[0].casefold() == "remove":
+    elif arg0 == "remove":
         if birthday_key and len_args - birthday_key != 1:
             return error, "There is shouldn't be birthday value, just key"
         if (phone_key and phone_key - name_key != 2) or (not phone_key and birthday_key and birthday_key - name_key != 2) \
@@ -376,7 +377,7 @@ def parser(text: str) -> tuple[callable, tuple[str]|None]:
         return exit, None
     elif text.strip().casefold() == "hello":
         return hello, None
-    elif args[0].casefold() == "show":
+    elif arg0 == "show":
         if not name_key and not phone_key:
             return error, "There is should be at least one key"
         if name_key and ((phone_key and phone_key - name_key != 2) or (not phone_key and len_args - name_key != 2)):
