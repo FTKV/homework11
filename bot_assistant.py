@@ -172,8 +172,7 @@ class Record:
         self.birthday = deque(maxlen=1)
         for phone in phones:
             self.add_phone(phone)
-        if birthday:
-            self.set_birthday(birthday)
+        self.set_birthday(birthday)
 
     def days_to_birthday(self):
         today = datetime.now().date()
@@ -211,7 +210,8 @@ class Record:
         return "The phone is not found"
     
     def set_birthday(self, birthday):
-        self.birthday.append(birthday)
+        if birthday:
+            self.birthday.append(birthday)
         return "Set birthday success"
 
 
